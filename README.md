@@ -1,0 +1,2 @@
+"Your Task Hub" application accepts a to-do, stored it permanently in its database and dynamically displayes the to-do as soon as user clicks on add button. there is delete functionality with which you can delete the to-do and the changes can be seen dynamically on screen.
+The application has been created using MERN Stack development.The frontend part is created using react while the backend part is created using mongodb,nodejs,expressjs.
