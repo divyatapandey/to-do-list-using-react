@@ -6,32 +6,24 @@ function Todo() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
 
-  // Function to fetch todos from the backend
+  // Fetch todos from the backend
   const fetchTodos = async () => {
     try {
-      const response = await axios.get('');//here goes your backend server connection
-      setTodos(response.data);
+      const response = await axios.get('http://localhost:5000/api/todos');
+      setTodos(response.data); // Set the todos state with fetched data
     } catch (error) {
       console.error('Error fetching todos:', error.message);
     }
   };
 
-  useEffect(() => {
-    // Fetch todos when the component mounts
-    fetchTodos();
-  }, []); // Empty dependency array ensures the effect runs only once on mount
-
-  // Function to add a todo
+  // Add todo
   const addTodo = async () => {
     if (todoInput.trim() !== '') {
       try {
-        const response = await axios.post('', //here goes your backend server connection
-        {
+        const response = await axios.post('http://localhost:5000/api/todos', {
           text: todoInput,
         });
-
-        console.log('Response from addTodo:', response.data);
-        setTodos([...todos, response.data]);
+        setTodos([...todos, response.data]); // Add the new todo to the state
         setTodoInput('');
       } catch (error) {
         console.error('Error adding todo:', error.message);
@@ -39,24 +31,27 @@ function Todo() {
     }
   };
 
-  // Function to remove a todo
+  // Remove todo
   const removeTodo = async (id) => {
     try {
-      await axios.delete(`/${id}`);//here goes your backend server connection
-      const updatedTodos = todos.filter(todo => todo._id !== id);
-
-      console.log('Updated todos after removal:', updatedTodos);
-      setTodos(updatedTodos);
+      await axios.delete(`http://localhost:5000/api/todos/${id}`);
+      const updatedTodos = todos.filter((todo) => todo._id !== id);
+      setTodos(updatedTodos); // Update the state after removing the todo
     } catch (error) {
       console.error('Error removing todo:', error.message);
     }
   };
 
+  // Fetch todos on component mount
+  useEffect(() => {
+    fetchTodos();
+  }, []); // Empty dependency array ensures this runs only once
+
   return (
     <>
       <h1 id="heading">Your Task Hub</h1>
 
-      {/* Input for adding new todos */}
+      {/* Input field and add button */}
       <div id="inputs">
         <input
           id="todo-input"
@@ -65,13 +60,15 @@ function Todo() {
           value={todoInput}
           onChange={(e) => setTodoInput(e.target.value)}
         />
-        <button id="add-btn" onClick={addTodo}><i className="fa-solid fa-plus"></i></button>
+        <button id="add-btn" onClick={addTodo}>
+          <i className="fa-solid fa-plus"></i>
+        </button>
       </div>
 
-      {/* Display the list of todos */}
+      {/* Todo list */}
       <div>
         <ul className="todo-container">
-          {todos.map(todo => (
+          {todos.map((todo) => (
             <li key={todo._id} className="todo-item">
               <i className="fa-solid fa-circle-check" id="check"></i>&ensp;
               <span className="todo-content">{todo.text}</span>
