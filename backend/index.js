@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Mongoose connection
-mongoose.connect('mongodb+srv://divyata:DivyaDB@to-do.ko7xh.mongodb.net/to-do?retryWrites=true&w=majority', {
+mongoose.connect('', { // enter connection string here
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
